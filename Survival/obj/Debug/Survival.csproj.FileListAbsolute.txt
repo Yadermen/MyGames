@@ -1,0 +1,7 @@
+E:\визуалка — копия (2)\ponpom\Survival\bin\Debug\Survival.exe.config
+E:\визуалка — копия (2)\ponpom\Survival\bin\Debug\Survival.exe
+E:\визуалка — копия (2)\ponpom\Survival\bin\Debug\Survival.pdb
+E:\визуалка — копия (2)\ponpom\Survival\obj\Debug\Survival.csproj.AssemblyReference.cache
+E:\визуалка — копия (2)\ponpom\Survival\obj\Debug\Survival.csproj.CoreCompileInputs.cache
+E:\визуалка — копия (2)\ponpom\Survival\obj\Debug\Survival.exe
+E:\визуалка — копия (2)\ponpom\Survival\obj\Debug\Survival.pdb
