@@ -14,16 +14,45 @@ namespace Survival
 
         public static void Main(string[] args)
         {
-            Player player = new Player();
-            Job[] jobs = { new GarbageCollector(), new Security(), new Salesman(), new Manager(),
-              new Director(), new CEO(), new SmallBusinessman(), new AverageBusinessman(), new BigBusinessman(),
-              new Mer(), new Official(), new Deputy(), new VicePresident(), new President()};
+            Player player = new Player();       
+        List<Job> jobs = new List<Job>(){
+                       new Job("Сборщик мусора", 10, 3, 0, 0),
+                       new Job("Охраник", 20, 4, 40, 10),
+                       new Job("Продавец-консультант", 40, 6, 80, 15),
+                       new Job("Менеджер", 80, 8, 160, 23),
+                       new Job("Директор магазина", 160, 10, 320, 31),
+                       new Job("Генеральный директор", 320, 12, 640, 39),
+                       new Job("Малый бизнесмен", 640, 15, 1280, 47),
+                       new Job("Средний бизнесмен", 1280, 17, 2560, 59),
+                       new Job("Крупный бизнесмен", 2560, 19, 2560, 110),
+                       new Job("Мер", 5120, 19, 10240, 150),
+                       new Job("Чиновник", 10240, 22, 20480, 170),
+                       new Job("Депутат", 20480, 24, 40960, 200),
+                       new Job("Вице-Президент", 40960, 26, 80920, 250),
+                       new Job("Президент", 80920, 200, 163840, 250),
+
+                        };
+            List<Item> items = new List<Item>() {new Item("Нету", 0, 1.0f),
+                                 new Item("Сумка", 100, 1.1f),
+                                 new Item("Кошелек", 500, 1.2f),
+                                 new Item("Часы", 2500, 1.3f),
+                                 new Item("Кнопочный телефон", 5000, 1.4f),
+                                 new Item("Деловой костюм", 15000, 1.5f),
+                                 new Item("Студия на окраине", 20000, 1.6f),
+                                 new Item("Смартфон", 25000, 1.7f),
+                                 new Item("Ноутбук", 35000, 1.8f),
+                                 new Item("Мопед", 40000, 1.9f),
+                                 new Item("Гараж", 50000, 2.0f),
+                                 new Item("Асистент", 75000, 2.1f),
+                                 new Item("Машина", 100000, 2.2f),
+                                 new Item("Компьютер", 150000, 2.3f),
+                                 new Item("Квартира в центре", 250000, 2.4f),
+                                 new Item("Яхта", 500000, 3.0f),
+                                 new Item("Вертолет", 1000000, 5.0f),
+                                 new Item("Особняк", 10000000, 10.0f)};
             ItemShop ishop = new ItemShop();
-            Item[] items = {new Bag(), new Wallet(), new Watch(), new ButtonTelephone(), new Suit(), new Apartment(), new Phone(),
-            new Laptop(), new Moped(), new Garage(), new Assistant(), new Car(), new Computer(), new BigApartment(), new Yacht(),
-            new Helicopter(), new Mansion()};
-            Random rand = new Random();
             JobShop jshop = new JobShop();
+    
 
 
             Console.WriteLine(new string('=', 30));
@@ -56,8 +85,8 @@ namespace Survival
             {
 
                 Console.Clear();
-                Console.WriteLine("1-Магазин и Биржа Труда\n\n2-Работа\n\n3-Статистика");
-                ChangeTextColor("0-Выход", ConsoleColor.Red, 10, 5);
+                Console.WriteLine("1-Магазин и Биржа Труда\n\n2-Работа\n\n3-Статистика\n\n4-Казино");
+                ChangeTextColor("0-Выход", ConsoleColor.Red, 10, 7);
                 Console.WriteLine();
                 Console.Write("Выберите действие: ");
                 switch (Console.ReadKey().Key)
@@ -74,7 +103,7 @@ namespace Survival
                                 {
                                     player.job = jobs[JobShop.IndexJob];
                                     JobShop.isBuyJob = false;
-                                    player.Balance -= jobs[JobShop.IndexJob].Price;
+                                    player.Balance -= jobs[JobShop.IndexJob].JobPrice;
                                     player.Exp -= jobs[JobShop.IndexJob].ExpPrice;
                                 }
                                 break;
@@ -83,9 +112,9 @@ namespace Survival
                                 ishop.Sell(player.Balance);
                                 if (ItemShop.isBuyItem)
                                 {
+                                    player.Balance -= items[ItemShop.IndexItem].ItemPrice;
                                     player.item = items[ItemShop.IndexItem];
                                     ItemShop.isBuyItem = false;
-                                    player.Balance -= items[ItemShop.IndexItem].Price;
                                 }
                                 break;
 
@@ -103,14 +132,54 @@ namespace Survival
                         player.ShowInfo(player.Name, player.job, player.Balance, player.Exp, player.item);
                         Console.ReadKey();
                         break;
+                    case ConsoleKey.D4: 
+                        Console.Clear();
+                        Console.WriteLine("Нажмите Пробел чтобы ознокомится с правилами\nНажмите Enter чтобы сделать ставку\nНажмите Backspace чтобы вернутся в главное " +
+                           "меню");
+                        bool isGood = true;
+                                
+                                    switch (Console.ReadKey().Key)
+                                    {
+                                    case ConsoleKey.Backspace:
+                                        isGood = false;
+                                        break;
+
+                                    case ConsoleKey.Spacebar:
+                                        Casino.WriteRules();
+                                Console.WriteLine("Нажмите любую клавишу для продолжения...");
+                                Console.ReadKey();
+                                        break;
+                                    }
+                                while (isGood)
+                                {
+                                    Console.Clear();
+                                    
+                                Console.Write("Ваша ставка: ");
+                                    int bid = int.Parse(Console.ReadLine());
+                                    if (bid <= player.Balance)
+                                    {
+                                        Console.WriteLine();
+                                        ChangeTextColor("Ставка принята!", ConsoleColor.Green);
+                                        isGood = false;
+                                        if (Casino.Game())
+                                        {
+                                            Console.Clear();
+                                            player.Balance += (bid *5);
+                                        }else {
+                                        player.Balance -= bid;
+                                        }
+                                    }else
+                                    {
+                                        Console.WriteLine();
+                                        ChangeTextColor("Ошибка ставка привышает ваш баланс!");
+                                Console.ReadKey();  
+                                    }
+                                }
+                                break;       
                     case ConsoleKey.D0:
                         Console.Clear();
                         Console.WriteLine("Конец игры");
                         isWork = false;
-                        break;
-
-
-                    default:
                         break;
                 }
 
@@ -154,11 +223,43 @@ namespace Survival
 
         public Player()
         {
-            Job[] jobs = { new GarbageCollector(), new Security(), new Salesman(), new Manager(),
-              new Director(), new CEO(), new SmallBusinessman(), new AverageBusinessman(), new BigBusinessman(),
-              new Mer(), new Official(), new Deputy(), new VicePresident(), new President()};
-            Nothing nothing = new Nothing();
-            item = nothing;
+            List<Job> jobs = new List<Job>(){
+                       new Job("Сборщик мусора", 10, 3, 0, 0),
+                       new Job("Охраник", 20, 4, 40, 10),
+                       new Job("Продавец-консультант", 40, 6, 80, 15),
+                       new Job("Менеджер", 80, 8, 160, 23),
+                       new Job("Директор магазина", 160, 10, 320, 31),
+                       new Job("Генеральный директор", 320, 12, 640, 39),
+                       new Job("Малый бизнесмен", 640, 15, 1280, 47),
+                       new Job("Средний бизнесмен", 1280, 17, 2560, 59),
+                       new Job("Крупный бизнесмен", 2560, 19, 2560, 110),
+                       new Job("Мер", 5120, 19, 10240, 150),
+                       new Job("Чиновник", 10240, 22, 20480, 170),
+                       new Job("Депутат", 20480, 24, 40960, 200),
+                       new Job("Вице-Президент", 40960, 26, 80920, 250),
+                       new Job("Президент", 80920, 200, 163840, 250),
+
+                        };
+            List<Item> items = new List<Item>() {new Item("Нету", 0, 1.0f),
+                                 new Item("Сумка", 100, 1.1f),
+                                 new Item("Кошелек", 500, 1.2f),
+                                 new Item("Часы", 2500, 1.3f),
+                                 new Item("Кнопочный телефон", 5000, 1.4f),
+                                 new Item("Деловой костюм", 15000, 1.5f),
+                                 new Item("Студия на окраине", 20000, 1.6f),
+                                 new Item("Смартфон", 25000, 1.7f),
+                                 new Item("Ноутбук", 35000, 1.8f),
+                                 new Item("Мопед", 40000, 1.9f),
+                                 new Item("Гараж", 50000, 2.0f),
+                                 new Item("Асистент", 75000, 2.1f),
+                                 new Item("Машина", 100000, 2.2f),
+                                 new Item("Компьютер", 150000, 2.3f),
+                                 new Item("Квартира в центре", 250000, 2.4f),
+                                 new Item("Яхта", 500000, 3.0f),
+                                 new Item("Вертолет", 1000000, 5.0f),
+                                 new Item("Особняк", 10000000, 10.0f)};
+
+            item = items[0];
             job = jobs[0];
             Balance = 100;
             Exp = 0;
@@ -426,26 +527,60 @@ namespace Survival
             }
         }
     }
-
-
-
-
-
-
-
-
-    public class Shop
+    class Casino
     {
-        public virtual void Sell(float bal, float Exp)
+       public static void WriteRules()
         {
+            Console.Clear();
+            Console.WriteLine("Добро Пожаловать в Казино!\nПравила просты выпадают 3 случайных числа\nЕсли " +
+                "эти числа одинаковы ваша ставка умножается в 5 раз!\nВ противном случае сгорает");
+        }
+        public static bool Game(){
+            Console.Clear();
+            Random rand = new Random();
+            int Slot1, Slot2, Slot3;
+            Slot1 = rand.Next(0, 6);
+            Slot2 = rand.Next(0, 6);
+            Slot3 = rand.Next(0, 6);
+            Thread.Sleep(1000);
+            Console.Write($"{Slot1} | ");
+            Thread.Sleep(1000);
+            Console.Write($"{Slot2} | ");
+            Thread.Sleep(1000);
+            Console.Write($"{Slot3}\n");
+           
+            Console.ReadKey();
+            if (Slot1 == Slot2 & Slot1 == Slot3)
+            {
+                Program.ChangeTextColor("Вы Выйграли!!!", ConsoleColor.Green);
+                return true;
+            }else{
+                Program.ChangeTextColor("Вы Проиграли");
+                return false;
+            }
 
         }
     }
-    public class JobShop : Shop
+  
+    public class JobShop 
     {
-        Job[] jobs = { new GarbageCollector(), new Security(), new Salesman(), new Manager(),
-              new Director(), new CEO(), new SmallBusinessman(), new AverageBusinessman(), new BigBusinessman(),
-              new Mer(), new Official(), new Deputy(), new VicePresident(), new President()};
+        List<Job> jobs = new List<Job>(){
+                       new Job("Сборщик мусора", 10, 3, 0, 0),
+                       new Job("Охраник", 20, 4, 40, 10),
+                       new Job("Продавец-консультант", 40, 6, 80, 15),
+                       new Job("Менеджер", 80, 8, 160, 23),
+                       new Job("Директор магазина", 160, 10, 320, 31),
+                       new Job("Генеральный директор", 320, 12, 640, 39),
+                       new Job("Малый бизнесмен", 640, 15, 1280, 47),
+                       new Job("Средний бизнесмен", 1280, 17, 2560, 59),
+                       new Job("Крупный бизнесмен", 2560, 19, 2560, 110),
+                       new Job("Мер", 5120, 19, 10240, 150),
+                       new Job("Чиновник", 10240, 22, 20480, 170),
+                       new Job("Депутат", 20480, 24, 40960, 200),
+                       new Job("Вице-Президент", 40960, 26, 80920, 250),
+                       new Job("Президент", 80920, 200, 163840, 250),
+
+                        };
         public static int IndexJob;
         public static bool isBuyJob = false;
 
@@ -453,14 +588,14 @@ namespace Survival
         {
             Console.Clear();
             Console.WriteLine($"Название: {jobs[index].JobName} \n\nЗарплата: {jobs[index].Salary}\n\n" +
-                $"Дает Опыта: {jobs[index].ExpSalary}\n\nЦена: {jobs[index].Price}\n\nТребуется Опыта: {jobs[index].ExpPrice}");
+                $"Дает Опыта: {jobs[index].ExpSalary}\n\nЦена: {jobs[index].JobPrice}\n\nТребуется Опыта: {jobs[index].ExpPrice}");
             Console.WriteLine();
             Console.WriteLine($"Ваш баланс: {bal} Ваш опыт: {Exp}\n");
 
         }
         private void JobSell(float balance, int index, float Exp)
         {
-            if (balance >= jobs[index].Price & Exp >= jobs[index].ExpPrice)
+            if (balance >= jobs[index].JobPrice & Exp >= jobs[index].ExpPrice)
             {
                 IndexJob = index;
                 isBuyJob = true;
@@ -472,7 +607,7 @@ namespace Survival
             }
 
         }
-        public override void Sell(float bal, float Exp)
+        public void Sell(float bal, float Exp)
         {
             bool isWork = true;
             while (isWork)
@@ -487,9 +622,9 @@ namespace Survival
                     break;
                 }
                 Console.WriteLine("№  Название  Цена");
-                for (int i = 0; i < jobs.Length; i++)
+                for (int i = 0; i < jobs.Count; i++)
                 {
-                    Console.WriteLine((i + 1) + ". " + jobs[i].JobName + " " + jobs[i].Price);
+                    Console.WriteLine((i + 1) + ". " + jobs[i].JobName + " " + jobs[i].JobPrice);
                 }
                 Console.WriteLine();
                 Console.WriteLine("Если хотите подробнее узнать о работе введите его номер");
@@ -510,7 +645,7 @@ namespace Survival
                     isWork = false;
                     break;
                 }
-                else if (index >= 0 & index <= jobs.Length)
+                else if (index >= 0 & index <= jobs.Count)
                 {
                     JobInfo(index, bal, Exp);
                     Console.WriteLine("Нажмите Пробел чтобы вернутся\n\nНажмите Enter чтобы устроиться на работу");
@@ -530,24 +665,39 @@ namespace Survival
         }
 
     }
-    public class ItemShop : Shop
+    public class ItemShop
     {
         public static int IndexItem;
         public static bool isBuyItem = false;
-        Item[] items = {new Bag(), new Wallet(), new Watch(), new ButtonTelephone(), new Suit(), new Apartment(), new Phone(),
-            new Laptop(), new Moped(), new Garage(), new Assistant(), new Car(), new Computer(), new BigApartment(), new Yacht(),
-            new Helicopter(), new Mansion()};
+        List<Item> items = new List<Item>() {new Item("Нету", 0, 1.0f),
+                                 new Item("Сумка", 100, 1.1f),
+                                 new Item("Кошелек", 500, 1.2f),
+                                 new Item("Часы", 2500, 1.3f),
+                                 new Item("Кнопочный телефон", 5000, 1.4f),
+                                 new Item("Деловой костюм", 15000, 1.5f),
+                                 new Item("Студия на окраине", 20000, 1.6f),
+                                 new Item("Смартфон", 25000, 1.7f),
+                                 new Item("Ноутбук", 35000, 1.8f),
+                                 new Item("Мопед", 40000, 1.9f),
+                                 new Item("Гараж", 50000, 2.0f),
+                                 new Item("Асистент", 75000, 2.1f),
+                                 new Item("Машина", 100000, 2.2f),
+                                 new Item("Компьютер", 150000, 2.3f),
+                                 new Item("Квартира в центре", 250000, 2.4f),
+                                 new Item("Яхта", 500000, 3.0f),
+                                 new Item("Вертолет", 1000000, 5.0f),
+                                 new Item("Особняк", 10000000, 10.0f)};
         private void ItemInfo(int index, float bal)
         {
             Console.Clear();
             Console.WriteLine($"Название: {items[index].ItemName} \n\n" +
-                $"Цена: {items[index].Price}\n\nКоофицент: {items[index].Factor}");
+                $"Цена: {items[index].ItemPrice}\n\nКоофицент: {items[index].Factor}");
             Console.WriteLine(new string('=', 25));
             Console.WriteLine($"Ваш баланс: {bal}\n");
         }
         private void ItemSell(float balance, int index)
         {
-            if (balance >= items[index].Price)
+            if (balance >= items[index].ItemPrice)
             {
                 IndexItem = index;
                 isBuyItem = true;
@@ -575,9 +725,9 @@ namespace Survival
                     break;
                 }
                 Console.WriteLine("№  Название  Цена");
-                for (int i = 0; i < items.Length; i++)
+                for (int i = 1; i < items.Count; i++)
                 {
-                    Console.WriteLine((i + 1) + ". " + items[i].ItemName + " " + items[i].Price);
+                    Console.WriteLine((i + 1) + ". " + items[i].ItemName + " " + items[i].ItemPrice);
                 }
                 Console.WriteLine();
                 Console.WriteLine("Если хотите подробнее узнать о товаре введите его номер");
@@ -598,7 +748,7 @@ namespace Survival
                     isWork = false;
                     break;
                 }
-                else if (index >= 0 & index <= items.Length)
+                else if (index >= 0 & index <= items.Count)
                 {
                     ItemInfo(index, bal);
                     Console.WriteLine("Нажмите Пробел чтобы вернутся\n\nНажмите Enter чтобы купить товар");
@@ -621,11 +771,6 @@ namespace Survival
 
 
 }
-
-
-
-
-
 
 
 
