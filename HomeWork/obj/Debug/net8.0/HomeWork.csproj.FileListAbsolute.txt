@@ -1,0 +1,15 @@
+E:\Папка для проектов\Survival\HomeWork\bin\Debug\net8.0\HomeWork.exe
+E:\Папка для проектов\Survival\HomeWork\bin\Debug\net8.0\HomeWork.deps.json
+E:\Папка для проектов\Survival\HomeWork\bin\Debug\net8.0\HomeWork.runtimeconfig.json
+E:\Папка для проектов\Survival\HomeWork\bin\Debug\net8.0\HomeWork.dll
+E:\Папка для проектов\Survival\HomeWork\bin\Debug\net8.0\HomeWork.pdb
+E:\Папка для проектов\Survival\HomeWork\obj\Debug\net8.0\HomeWork.GeneratedMSBuildEditorConfig.editorconfig
+E:\Папка для проектов\Survival\HomeWork\obj\Debug\net8.0\HomeWork.AssemblyInfoInputs.cache
+E:\Папка для проектов\Survival\HomeWork\obj\Debug\net8.0\HomeWork.AssemblyInfo.cs
+E:\Папка для проектов\Survival\HomeWork\obj\Debug\net8.0\HomeWork.csproj.CoreCompileInputs.cache
+E:\Папка для проектов\Survival\HomeWork\obj\Debug\net8.0\HomeWork.sourcelink.json
+E:\Папка для проектов\Survival\HomeWork\obj\Debug\net8.0\HomeWork.dll
+E:\Папка для проектов\Survival\HomeWork\obj\Debug\net8.0\refint\HomeWork.dll
+E:\Папка для проектов\Survival\HomeWork\obj\Debug\net8.0\HomeWork.pdb
+E:\Папка для проектов\Survival\HomeWork\obj\Debug\net8.0\HomeWork.genruntimeconfig.cache
+E:\Папка для проектов\Survival\HomeWork\obj\Debug\net8.0\ref\HomeWork.dll
