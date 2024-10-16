@@ -1,0 +1,179 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Reflection.Metadata.Ecma335;
+using System.Threading.Channels;
+namespace NTestProject
+{
+    internal class Program
+    {
+
+        private static void Main(string[] args)
+        {
+            Console.WriteLine("Добро пожаловать!\nНажите любую клавишу для продолжения...");
+            Console.ReadKey();
+            bool isWork = true;
+            User user = new User();
+            Random rand = new Random();
+            while (isWork)
+            {
+                Console.Clear();
+                Console.WriteLine("1-Сделать ставку\n\n2-Пополнить баланс\n\n3-Статистика\n\n0-Выход");
+                switch (Console.ReadKey().Key)
+                {
+
+                    case ConsoleKey.D0:
+                        isWork = false;
+                        break;
+                    case ConsoleKey.D1:
+                        int bid = 0;
+                        bool isGood = true;
+                        while (isGood)
+                        {
+                            Console.Clear();
+                            Console.WriteLine($"Ваш баланс: {user.balance}");
+                            Console.SetCursorPosition(0, 10);
+                            Console.WriteLine("Выход - 0");
+                            Console.SetCursorPosition(0, 2);
+                            Console.Write("Сделайте ставку: ");
+
+                            bid = int.Parse(Console.ReadLine() ?? "0");
+                            if (bid == 0)
+                                break;
+                            if (bid <= user.balance && bid > 0)
+                                isGood = false;
+                            else
+                            {
+                                Console.WriteLine("Ошибка!Попробуйте еще раз!");
+                                Console.ReadKey();
+                            }
+                        }
+                        isGood = true;
+                        int cooficient = 0;
+                        while (isGood)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Выберите коофицент: ");
+                            cooficient = int.Parse(Console.ReadLine() ?? "0");
+                            if (cooficient > 1)
+                                isGood = false;
+                            else
+                            {
+                                Console.WriteLine("Коофицент должен быть больше 1");
+                                Console.ReadKey();
+                            }
+                        }
+                        isGood = true;
+                        int userNumber = 0;
+                        while (isGood)
+                        {
+                            Console.Clear();
+                            Console.WriteLine($"Выбирите выйгрышное число от 0 до {cooficient * 5 + 1}");
+
+                            userNumber = int.Parse(Console.ReadLine() ?? "0");
+                            if (userNumber <= rand.Next(0, cooficient * 5 + 1) && bid >= 0)
+                                isGood = false;
+                            else
+                            {
+                                Console.WriteLine("Ошибка!Попробуйте еще раз!");
+                                Console.ReadKey();
+                            }
+                        }
+
+
+                        int number = rand.Next(0, cooficient * 5 + 1);
+                        for (int i = 0; i < 3; i++)
+                        {
+                            Console.Clear();
+                            Console.WriteLine(rand.Next(0, cooficient * 5 + 1));
+                            Thread.Sleep(500);
+                        }
+                        Console.Clear();
+                        Console.WriteLine($"Выпало число: {number}\n\nВаше число:{userNumber}");
+                        Console.ReadKey();
+                        if (number == userNumber)
+                        {
+                            Console.WriteLine("ПОБЕДА!!!");
+                            user.TakeWinMoney(bid * cooficient);
+                            Console.ReadKey();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Вы проиграли");
+                            user.GiveLoseMoney(bid);
+                            Console.ReadKey();
+                        }
+
+                        Console.WriteLine();
+
+                        break;
+                    case ConsoleKey.D2:
+                        user.TakeCardMoney();
+                        break;
+                    case ConsoleKey.D3:
+                        Console.Clear();
+                        Console.WriteLine($"Ваш баланс: {user.balance}\n\nКоличество выйгрышей: {user.wins}\n\nКоличество проигрышей: {user.lose}");
+                        Console.ReadKey();
+                        break;
+                        //case ConsoleKey.D4:
+                        //    break;
+                        //case ConsoleKey.D5:
+                        //    break;
+                        //case ConsoleKey.D6:
+                        //    break;
+                        //case ConsoleKey.D7:
+                        //    break;
+                        //case ConsoleKey.D8:
+                        //    break;
+                        //case ConsoleKey.D9:
+                        //    break;
+
+                }
+            }
+
+        }
+    }
+    class User
+    {
+        public User()
+        {
+            balance = 0;
+            wins = 0;
+            lose = 0;
+        }
+        Casino casino = new Casino();
+        public int balance { get; private set; }
+        public int wins { get; private set; }
+        public int lose { get; private set; }
+        public void TakeCardMoney()
+        {
+            balance += casino.AddMoney();
+            Console.WriteLine("Баланс пополнен!");
+        }
+        public void TakeWinMoney(int winMoney)
+        {
+            balance += winMoney;
+            wins++;
+        }
+        public void GiveLoseMoney(int loseMoney)
+        {
+            balance -= loseMoney;
+            lose++;
+        }
+    }
+    class Casino
+    {
+        public int AddMoney()
+        {
+            Console.Clear();
+            Console.Write("Введите номер карты для пополнения баланса: ");
+            Console.ReadLine();
+            Console.Write("Введите Пин-код: ");
+            Console.ReadLine();
+            Console.Write("Введите сумму: ");
+            return int.Parse(Console.ReadLine() ?? "0");
+        }
+
+    }
+
+}
